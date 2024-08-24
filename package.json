@@ -1,0 +1,29 @@
+{
+  "name": "pruuv-analytics",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "module": "dist/index.m.js",
+  "unpkg": "dist/index.umd.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "require": "./dist/index.js",
+    "default": "./dist/index.modern.mjs"
+  },
+  "scripts": {
+    "build": "rm -rf dist && microbundle --tsconfig tsconfig.json --no-source-map"
+  },
+  "keywords": [],
+  "author": "Pruuv Ltd",
+  "license": "ISC",
+  "description": "",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/uuid": "^10.0.0",
+    "microbundle": "^0.15.1"
+  },
+  "dependencies": {
+    "uuid": "^10.0.0"
+  }
+}

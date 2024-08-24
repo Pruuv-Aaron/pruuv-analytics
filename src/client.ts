@@ -31,7 +31,7 @@ export class PruuvAnalyticsClient {
   protected request<T>(options?: RequestInit): Promise<T> {
     const headers = {
       'Content-Type': 'application/json',
-      'api-key': this.apiKey,
+      // 'api-key': this.apiKey,
     }
     const config = {
       ...options,

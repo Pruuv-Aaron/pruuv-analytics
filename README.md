@@ -4,8 +4,9 @@
     npm install pruuv-analytics
 
 ## Usage
-    import PruuvAnalytics from 'pruuv-analytics';
+    import PruuvAnalyticsClient from 'pruuv-analytics';
 
-    const paClient = new PruuvAnalytics('api-key', 'funnel-id')
+    const paClient = new PruuvAnalyticsClient('api-key', 'funnel-id')
 
-    paClient.pageView({ additionalCustomContext: 'This is a custom context value from you!' })
+    // Event name options: 'page-view' or 'clicked'
+    paClient.event(<event_name/>, { additionalCustomContext: 'This is a custom context value from you!' })

@@ -1,18 +1,3 @@
-import { v4 as UUID4 } from 'uuid'
-
-interface PruuvAnalyticsContext {
-  utms: object
-  page: {
-    path: string
-    referrer: string
-    queryString: string
-    title: string
-    url: string
-  }
-  timezone: string
-  timestamp: string
-}
-
 export class PruuvAnalyticsClient {
   private readonly apiKey: string
   private readonly funnelId: string
@@ -46,21 +31,30 @@ export class PruuvAnalyticsClient {
     })
   }
 
-  protected pruuvAnalyticsContexts(): PruuvAnalyticsContext {
+  protected parseUTMs(): object {
+    const UTMs = {}
+
+    const rawUTMs = window.location.search.substring(1)
+    const UTMList = rawUTMs.split('&')
+
+    UTMList.map((rawUTM, idx) => {
+      const UTMKey = rawUTM.split('=')[0]
+      UTMs[UTMKey] = rawUTM.split('=')[1]
+    })
+
+    return UTMs
+  }
+
+  protected pruuvAnalyticsContexts(): object {
     const urlInfo = new URL(window.location.href)
+
     return {
-      utms: {
-        'sample-utm-1': 'sample-value-1',
-        'sample-utm-2': 'sample-value-2',
-      },
-      page: {
-        path: urlInfo.pathname,
-        referrer: 'sample-referrer',
-        queryString: 'sample-query-string',
-        title: 'sample-title',
-        url: urlInfo.hostname
-      },
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      origin: urlInfo.origin,
+      hostname: urlInfo.hostname,
+      path: urlInfo.pathname,
+      utms: this.parseUTMs(),
+      userAgent: window.navigator.userAgent,
+      timezone: 'GMT',
       timestamp: new Date().toUTCString()
     }
   }
@@ -70,16 +64,16 @@ export class PruuvAnalyticsClient {
     if (userExists !== null)
       return userExists
 
-    const newUserId = UUID4()
+    const newUserId = crypto.randomUUID()
     window.localStorage.setItem(this.userIdStorageKey, newUserId)
 
     return newUserId
   }
 
-  public pageView(additionalContext: object): void {
+  public event(eventName: 'page-view' | 'clicked', additionalContext: object): void {
     const apiBody = {
-      userId: this.userId,
-      eventType: 'page-view',
+      anonymousUserID: this.userId,
+      eventName: eventName,
       funnelId: this.funnelId,
       context: {
         ...this.pruuvAnalyticsContexts(),

@@ -8,5 +8,4 @@
 
     const paClient = new PruuvAnalyticsClient('api-key', 'funnel-id')
 
-    // Event name options: 'page-view' or 'clicked'
-    paClient.event(<event_name/>, { additionalCustomContext: 'This is a custom context value from you!' })
+    paClient.page({ additionalCustomContext: 'This is a custom context value from you!' })

@@ -70,10 +70,10 @@ export class PruuvAnalyticsClient {
     return newUserId
   }
 
-  public event(eventName: 'page-view' | 'clicked', additionalContext: object): void {
+  public page(additionalContext: object): void {
     const apiBody = {
       anonymousUserID: this.userId,
-      eventName: eventName,
+      eventName: 'page-view',
       funnelId: this.funnelId,
       context: {
         ...this.pruuvAnalyticsContexts(),
